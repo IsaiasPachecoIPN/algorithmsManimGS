@@ -41,7 +41,7 @@ class Persona(Elem):
         return self.lista_preferencias
 
 
-class Hombre(Persona):
+class HM(Persona):
     
         def __init__(self) -> None:
             super().__init__()
@@ -51,20 +51,13 @@ class Hombre(Persona):
         def getElemento(self):
             return self.elemento
 
-class Mujer(Persona):
-
-        def __init__(self) -> None:
-            super().__init__()
-            self.color = "#f7cdab"
-            self.text = "Mujer"
-
 
 def construirListaA():
      
-     hombre = Hombre()
-     elemA = Elem().changeFigureText("A")
-     elemB = Elem().changeFigureText("B")
-     elemC = Elem().changeFigureText("C")
+     hombre = HM()
+     elemA = Elem().changeFigureText("A").changeFigureColor("#F6CECE")
+     elemB = Elem().changeFigureText("B").changeFigureColor("#F6CECE")
+     elemC = Elem().changeFigureText("C").changeFigureColor("#F6CECE")
 
      hombre.addToListaPreferencias(elemA)
      hombre.addToListaPreferencias(elemB)
@@ -72,12 +65,25 @@ def construirListaA():
 
      return hombre
 
+
+def construirListaPreferencias(elem, lista_preferencias, color = "#F6CECE"):
+     
+     #De eleme se va a sacar el nombre del elemento
+     obj = HM()
+     for i in range(len(lista_preferencias)):
+         obj_elem = Elem().changeFigureText(lista_preferencias[i]).changeFigureColor(color)
+         obj.addToListaPreferencias(obj_elem)
+    
+     return obj
+     
+
 def create_textbox(color, string):
     result = VGroup() # create a VGroup
     box = Rectangle(  # create a box
-        height=2, width=3, fill_color=color, 
+        height=1, width=2, fill_color=color, 
         fill_opacity=0.5, stroke_color=color
     )
-    text = Text(string).move_to(box.get_center()) # create text
-    result.add(box, text) # add both objects to the VGroup
+    print("box: ", box.get_center())
+    #text = Text(string) # create text
+    result.add(box) # add both objects to the VGroup
     return result

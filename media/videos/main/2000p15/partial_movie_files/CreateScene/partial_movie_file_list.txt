@@ -1,0 +1,6 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/isaia/Documents/CIC/Algorithms/Proyectos/algorithmsManimProyect/media/videos/main/2000p15/partial_movie_files/CreateScene/1600348953_1076466279_1210187948.mp4'
+file 'file:C:/Users/isaia/Documents/CIC/Algorithms/Proyectos/algorithmsManimProyect/media/videos/main/2000p15/partial_movie_files/CreateScene/1119870458_345352296_3714738061.mp4'
+file 'file:C:/Users/isaia/Documents/CIC/Algorithms/Proyectos/algorithmsManimProyect/media/videos/main/2000p15/partial_movie_files/CreateScene/1119870458_345352296_3826875100.mp4'
+file 'file:C:/Users/isaia/Documents/CIC/Algorithms/Proyectos/algorithmsManimProyect/media/videos/main/2000p15/partial_movie_files/CreateScene/1119870458_345352296_416562176.mp4'
+file 'file:C:/Users/isaia/Documents/CIC/Algorithms/Proyectos/algorithmsManimProyect/media/videos/main/2000p15/partial_movie_files/CreateScene/1119870458_190800790_125871633.mp4'
