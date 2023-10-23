@@ -58,9 +58,6 @@ class HM(Persona):
 
         def getElemento(self):
             return self.elemento
-
-        def getID(self):
-            return self.id
         
 
 def construirListaA():
@@ -77,26 +74,31 @@ def construirListaA():
      return hombre
 
 
-def construirListaPreferencias(elem, lista_preferencias, color = "#F6CECE"):
+def construirListaPreferencias(elem_id, lista_preferencias, color = "#F6CECE"):
      
      #De eleme se va a sacar el nombre del elemento
      obj = HM()
-     obj.setID(elem)
+     obj.getElemento().setID(elem_id)
      for i in range(len(lista_preferencias)):
          obj_elem = Elem().changeFigureText(lista_preferencias[i]).changeFigureColor(color)
-         obj_elem.setID(elem+lista_preferencias[i])
+         obj_elem.setID(elem_id+lista_preferencias[i])
          obj.addToListaPreferencias(obj_elem)
     
      return obj
      
 
 def create_textbox(color, string, ID = None):
+
+    print("ID: ", ID)
+
     result = VGroup() # create a VGroup
+    result.name = ID
     box = Rectangle(  # create a box
         height=1, width=2, fill_color=color, 
         fill_opacity=0.5, stroke_color=color, name = ID
     )
     print("box: ", box.get_center())
-    #text = Text(string) # create text
-    result.add(box) # add both objects to the VGroup
+    text = Text(string) # create text
+    result.add(text,box) # add both objects to the VGroup
+    #result.add(box) # add both objects to the VGroup
     return result
