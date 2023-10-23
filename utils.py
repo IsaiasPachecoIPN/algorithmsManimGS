@@ -10,9 +10,10 @@ class Elem:
     def __init__(self):
         self.color = "#87c2a5"
         self.text = "Elem"
+        self.id = 0
     
     def getFigure(self):
-        return create_textbox(self.color, self.text)
+        return create_textbox(self.color, self.text, self.id)
     
     def changeFigureColor(self, color):
         self.color = color
@@ -20,6 +21,13 @@ class Elem:
     
     def changeFigureText(self, text):
         self.text = text
+        return self
+    
+    def getID(self):
+        return self.id
+    
+    def setID(self, id):
+        self.id = id
         return self
 
 class Persona(Elem):
@@ -51,6 +59,9 @@ class HM(Persona):
         def getElemento(self):
             return self.elemento
 
+        def getID(self):
+            return self.id
+        
 
 def construirListaA():
      
@@ -70,18 +81,20 @@ def construirListaPreferencias(elem, lista_preferencias, color = "#F6CECE"):
      
      #De eleme se va a sacar el nombre del elemento
      obj = HM()
+     obj.setID(elem)
      for i in range(len(lista_preferencias)):
          obj_elem = Elem().changeFigureText(lista_preferencias[i]).changeFigureColor(color)
+         obj_elem.setID(elem+lista_preferencias[i])
          obj.addToListaPreferencias(obj_elem)
     
      return obj
      
 
-def create_textbox(color, string):
+def create_textbox(color, string, ID = None):
     result = VGroup() # create a VGroup
     box = Rectangle(  # create a box
         height=1, width=2, fill_color=color, 
-        fill_opacity=0.5, stroke_color=color
+        fill_opacity=0.5, stroke_color=color, name = ID
     )
     print("box: ", box.get_center())
     #text = Text(string) # create text

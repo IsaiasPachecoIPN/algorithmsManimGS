@@ -61,18 +61,30 @@ def addElementToScene(scene, elem, nextTo = None, position = DOWN, coords = None
 
 
 
+def getElemByID(id, scene):
+    for elem in scene.mobjects:
+        if elem[0].name == id:
+            print("elem: ", elem)
+            return elem[0]
+    return None
+
 class CreateScene(Scene):
     def construct(self):
         self.width = 2000
         self.height = 2000
         
-        elem = construirListaPreferencias("", galeShapleyGroupOne["h1"])
-        elem2 = construirListaPreferencias("", galeShapleyGroupOne["h2"], "#0B2161")
-        elem3 = construirListaPreferencias("", galeShapleyGroupOne["h3"], "#0B2161")
+        elem = construirListaPreferencias("h1", galeShapleyGroupOne["h1"])
+        #elem2 = construirListaPreferencias("h2", galeShapleyGroupOne["h2"], "#0B2161")
+        #elem3 = construirListaPreferencias("h3", galeShapleyGroupOne["h3"], "#0B2161")
         addElementToScene(self, elem)
         #print("NextListStartPoint: ", getNextListStartPoint(self))
-        addElementToScene(self, elem2, self.mobjects[0], coords=getNextListStartPoint(self))
+        #addElementToScene(self, elem2, self.mobjects[0], coords=getNextListStartPoint(self))
+        #addElementToScene(self, elem3, self.mobjects[1], position=RIGHT)
 
-        addElementToScene(self, elem3, self.mobjects[1], position=RIGHT)
-        
+        self.wait(1)
+        #getElemByID("h1m1", self).animate.set_color("#FFF400")
+        rectToAnimate = getElemByID("h1m1", self)
+        self.play(rectToAnimate.animate(rate_func=there_and_back).set_color("#FFF400").flip())
+        rectToAnimate.set_color("#FFF400")
+
         self.wait(2)

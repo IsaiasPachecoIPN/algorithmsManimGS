@@ -1,8 +1,6 @@
 # This file is used internally by FFMPEG.
-file 'file:C:/Users/isaia/Documents/CIC/Algorithms/Proyectos/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/233967336_1076466279_1210187948.mp4'
-file 'file:C:/Users/isaia/Documents/CIC/Algorithms/Proyectos/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_345352296_3981734774.mp4'
-file 'file:C:/Users/isaia/Documents/CIC/Algorithms/Proyectos/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_345352296_2907732535.mp4'
-file 'file:C:/Users/isaia/Documents/CIC/Algorithms/Proyectos/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_345352296_3346504179.mp4'
-file 'file:C:/Users/isaia/Documents/CIC/Algorithms/Proyectos/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_345352296_2609628846.mp4'
-file 'file:C:/Users/isaia/Documents/CIC/Algorithms/Proyectos/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_345352296_3008567707.mp4'
-file 'file:C:/Users/isaia/Documents/CIC/Algorithms/Proyectos/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_190800790_4286412367.mp4'
+file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/233967336_1076466279_376539382.mp4'
+file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_345352296_3897836824.mp4'
+file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_345352296_1290815164.mp4'
+file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_3442084182_4074396067.mp4'
+file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_190800790_1687127231.mp4'
