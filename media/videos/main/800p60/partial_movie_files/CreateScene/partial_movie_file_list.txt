@@ -2,5 +2,6 @@
 file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/233967336_1076466279_376539382.mp4'
 file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_345352296_3897836824.mp4'
 file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_345352296_1290815164.mp4'
-file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_3442084182_4074396067.mp4'
-file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_190800790_1687127231.mp4'
+file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_3766726444_4074396067.mp4'
+file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_3554387636_4074396067.mp4'
+file 'file:/home/ipachechoc/Documentos/Algorithms/algorithmsManimProyect/media/videos/main/800p60/partial_movie_files/CreateScene/625000254_190800790_2952847394.mp4'

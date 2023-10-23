@@ -84,7 +84,8 @@ class CreateScene(Scene):
         self.wait(1)
         #getElemByID("h1m1", self).animate.set_color("#FFF400")
         rectToAnimate = getElemByID("h1m1", self)
-        self.play(rectToAnimate.animate(rate_func=there_and_back).set_color("#FFF400").flip())
-        rectToAnimate.set_color("#FFF400")
+        self.play(rectToAnimate.animate.set_fill("#FFF400"))
+        self.play(rectToAnimate.animate(rate_func=there_and_back).flip())
+        
 
         self.wait(2)
