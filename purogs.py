@@ -11,6 +11,20 @@ galeShapleyGroupTwo = {
     "clare": ["xavier", "yancey", "zeus"],
 }
 
+def isWomanSingle( w, arr_solteras):
+    return True if w in arr_solteras else False
+
+def assignMandWToBeEngaged(m,w, lista_asignaciones):
+    lista_asignaciones.append([m, w])
+
+def isSomeManSingle( arr_solteros ):
+    """
+    Retorna si hay algun hombre soltero en el arreglo
+    """
+    return True if len(arr_solteros) > 0 else False
+
+def addSingleManToArr( man, arr_solteros ):
+    arr_solteros.append(man)
 
 def getPreferenceOfElements(group_id, elem_1, elem_2):
     #print("group_id: ", group_id)
@@ -40,38 +54,34 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
     #print("solteros: ", solteros)
 
     #Se inicia recorrer la lista de preferencias de cada elemento del grupo 1
-    while len(solteras) > 0:
-        for key, value in galeShapleyGroupOne.items():
-            print("key: ", key)
-            for val in value:
-                print("val: ", val)
-                #addGSEvalueationPairsAnimation(scene, str(key), str(val))
-                #Si la mujer val esta soltera
-                if val in solteras:
-                    lista_asignaciones.append([key, val])
-                    solteras = removeElemFromList(val, solteras)
-                    solteros = removeElemFromList(key, solteros)
-                    #Una vez que key ha esta en una asignacion con val, se elimina val de la lista de preferencias de key
-                    galeShapleyGroupOne[key] = removeElemFromList(val, galeShapleyGroupOne[key])
+    while isSomeManSingle(solteros):
+        for m, m_preference_list in galeShapleyGroupOne.items():
+            #print("m: ", m)
+            for w in m_preference_list:
+                #print("val: ", val)
+                #If w is single, then m and w become engaged
+                if isWomanSingle(w, solteras):
+                    assignMandWToBeEngaged(m, w, lista_asignaciones)
+                    solteras = removeElemFromList(w, solteras)
+                    solteros = removeElemFromList(m, solteros)
+                    #if m and w are engaged, w is removed from m's preference list
+                    galeShapleyGroupOne[m] = removeElemFromList(w, galeShapleyGroupOne[m])
                     break
-                elif (getPreferenceOfElements(val, key, getFianceOfElement(val, lista_asignaciones))):
-                    old_fiance = getFianceOfElement(val, lista_asignaciones)
-                    lista_asignaciones.remove([getFianceOfElement(val, lista_asignaciones), val])
-                    lista_asignaciones.append([key, val])
-                    solteros = removeElemFromList(key, solteros)
-                    solteros.append(old_fiance)
+                # If w is not single, then w chooses between m and her fiance
+                elif (getPreferenceOfElements(w, m, getFianceOfElement(w, lista_asignaciones))):
+                    old_fiance = getFianceOfElement(w, lista_asignaciones)
+                    lista_asignaciones.remove([old_fiance, w])
+                    assignMandWToBeEngaged(m, w, lista_asignaciones)
+                    solteros = removeElemFromList(m, solteros)
+                    addSingleManToArr(old_fiance, solteros)
                     break
                 else:
-                    print("No se hace nada")
+                    #w rejects m
+                    None
 
                 
             
             print("lista_asignaciones: ", lista_asignaciones)
     
-    print("solteras: ", solteras)
-    print("solteros: ", solteros)
-    #Se muestra la lista de preferencias de los solteros
-    for i in solteros:
-        print("i: ", galeShapleyGroupOne[i])
 
 galeShapleyAlgorithm(None, galeShapleyGroupOne, galeShapleyGroupTwo)

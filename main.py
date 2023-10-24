@@ -4,34 +4,111 @@ from utils import *
 
 DEFAULT_BUFF = 0.25
 Y_DEFAULT_COORD = DEFAULT_BUFF * 3
+DEFAULT_BOX_HEIGHT = 1
+DEFAULT_BOX_WIDTH = 3
+
+# galeShapleyGroupOne = {
+#     "h1": ["m1", "m2", "m3"],
+#     "h2": ["m2", "m1", "m3"],
+#     "h3": ["m1", "m3", "m2"],
+# }
+
+# galeShapleyGroupTwo = {
+#     "m1": ["h2", "h1", "h3"],
+#     "m2": ["h1", "h3", "h2"],
+#     "m3": ["h2", "h3", "h1"],
+# }
+
 
 galeShapleyGroupOne = {
-    "h1": ["m1", "m2", "m3"],
-    "h2": ["m2", "m1", "m3"],
-    "h3": ["m1", "m3", "m2"],
+    "xavier": ["amy", "bertha", "clare"],
+    "yancey": ["bertha", "amy", "clare"],
+    "zeus": ["amy", "bertha", "clare"],
 }
 
 galeShapleyGroupTwo = {
-    "m1": ["h2", "h1", "h3"],
-    "m2": ["h1", "h3", "h2"],
-    "m3": ["h2", "h3", "h1"],
+    "amy": ["yancey", "xavier", "zeus"],
+    "bertha": ["xavier", "yancey", "zeus"],
+    "clare": ["xavier", "yancey", "zeus"],
 }
 
+def isWomanSingle( w, arr_solteras):
+    return True if w in arr_solteras else False
+
+def assignMandWToBeEngaged(m,w, lista_asignaciones):
+    lista_asignaciones.append([m, w])
+
+def isSomeManSingle( arr_solteros ):
+    """
+    Retorna si hay algun hombre soltero en el arreglo
+    """
+    return True if len(arr_solteros) > 0 else False
+
+def addSingleManToArr( man, arr_solteros ):
+    arr_solteros.append(man)
+
+def getPreferenceOfElements(group_id, elem_1, elem_2):
+    #print("group_id: ", group_id)
+    #print("elem_1: ", elem_1)
+    #print("elem_2: ", elem_2)
+    #Retorna si el elemento 1 esta antes que el elemento 2 en la lista de preferencias del galeShapleyGroupTwo
+    return galeShapleyGroupTwo[group_id].index(elem_1) < galeShapleyGroupTwo[group_id].index(elem_2)
+
+def getFianceOfElement(elem_val, lista_asignaciones):
+    #Retorna el elemento con el que esta casado el elemento group_id
+    for elem in lista_asignaciones:
+        if elem[1] == elem_val:
+            return elem[0]
+    return None
+
+def removeElemFromList(elem, lista):
+    #Retorna la lista sin el elemento elem
+    return [x for x in lista if x != elem]
 
 def galeShapleyAlgorithm(scene,groupOne, groupTwo):
 
     lista_asignaciones = []
+    solteras = [key for key in galeShapleyGroupTwo.keys()]
+    solteros = [key for key in galeShapleyGroupOne.keys()]
+
+    #print("solteras: ", solteras)
+    #print("solteros: ", solteros)
 
     #Se inicia recorrer la lista de preferencias de cada elemento del grupo 1
-    for key, value in groupOne.items():
-        print("key: ", key)
-        for val in value:
-            #addGSEvalueationPairsAnimation(scene, str(key), str(val))
-            #Si value no esta en la lista de asignaciones con ningun elemento de groupOne del tipo [key, value]
-            if not any(value in sublist for sublist in lista_asignaciones):
-                lista_asignaciones.append([key, value[0]])
-    
+    while isSomeManSingle(solteros):
+        for m, m_preference_list in galeShapleyGroupOne.items():
+            #print("m: ", m)
+            for w in m_preference_list:
+                #print("val: ", val)
+                addGSEvalueationPairsAnimation(scene, m, m+w)
+                #If w is single, then m and w become engaged
+                if isWomanSingle(w, solteras):
+                    assignMandWToBeEngaged(m, w, lista_asignaciones)
+                    solteras = removeElemFromList(w, solteras)
+                    solteros = removeElemFromList(m, solteros)
+                    #if m and w are engaged, w is removed from m's preference list
+                    galeShapleyGroupOne[m] = removeElemFromList(w, galeShapleyGroupOne[m])
+                    addWomanTextAnimation(scene, "Estoy soltera, Ok", w+m)
+                    addTextToScene( scene, str(lista_asignaciones))
+                    addEngagedAnimation(scene, w, w+m)
+                    break
+                # If w is not single, then w chooses between m and her fiance
+                elif (getPreferenceOfElements(w, m, getFianceOfElement(w, lista_asignaciones))):
+                    old_fiance = getFianceOfElement(w, lista_asignaciones)
+                    lista_asignaciones.remove([old_fiance, w])
+                    assignMandWToBeEngaged(m, w, lista_asignaciones)
+                    addEngagedAnimation(scene, w, w+m)
+                    solteros = removeElemFromList(m, solteros)
+                    addSingleManToArr(old_fiance, solteros)
+                    addWomanTextAnimation(scene, "No eres tu, soy yo", w+m)
+                    break
+                else:
+                    #w rejects m
+                    addWomanTextAnimation(scene, "Lo siento, ya tengo pareja", w+m)
+                    None                
 
+            print("lista_asignaciones: ", lista_asignaciones)
+    
 def getNextListStartPoint(scence):
 
     """
@@ -104,33 +181,95 @@ def getElemByID(id, scene):
             return elem
     return None
 
+def addTextToScene(scene, text):
+    text_container = getElemByID("txtEngaged", scene)
+    #Se reemplaza el texto del text_container
+    text_container[0] = Text("Asignaciones: "+text).next_to( getElemByID("xavieramy", scene), UP)
+    scene.play(Write(text_container[0]))
+    #scene.play(text_container.animate.write(text)
+    #mover el contenedor 
+    #scene.play(text_container.animate.move_to(getElemByID("amyyancey", scene).get_center()))
+
+def addWomanTextAnimation(scene, text, nextToId):
+    text_container = VGroup()
+    text = Text(text)
+    text_container.add(text)
+    scene.add(text_container.next_to( getElemByID(nextToId, scene), RIGHT))
+    #Remover el texto animado despues de 2 segundos
+    scene.play(Write(text_container[0]))
+    scene.play(FadeOut(text_container, run_time=2))
+
+def addEngagedAnimation(scene, elemA, elemB):
+
+    elem_a = getElemByID(elemA, scene)
+    elem_b = getElemByID(elemB, scene)
+
+    scene.play(elem_a.animate.set_fill("#FFB3B3"))
+    scene.play(elem_b.animate.set_fill("#FFB3B3"))
+
+    scene.play(elem_a.animate(rate_func=there_and_back).shift(RIGHT))    
+    scene.play(elem_b.animate(rate_func=there_and_back).shift(RIGHT))
+
+def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
+
+    galeShapleyGroupOneKeys = [key for key in galeShapleyGroupOne.keys()]
+
+    for idx, m in enumerate(galeShapleyGroupOne.keys()):
+        if idx == 0:
+            elem = construirListaPreferencias(m, galeShapleyGroupOne[m])
+        else:
+            elem = construirListaPreferencias(m, galeShapleyGroupOne[m], "#0B2161")
+
+        if idx == 0:
+            addElementToScene(scene, elem)
+        else:
+            addElementToScene(scene, elem, scene.mobjects[idx-1], coords=getNextListStartPoint(scene))
+
+    for idx, m in enumerate(galeShapleyGroupTwo.keys()):
+        if idx == 0:
+            elem = construirListaPreferencias(m, galeShapleyGroupTwo[m], "#FFFB01")
+        else:
+            elem = construirListaPreferencias(m, galeShapleyGroupTwo[m], "#01FF70")
+
+        #print("ElemCoords: ", getElemByID(galeShapleyGroupOneKeys[idx]+m, scene))
+        go_key = galeShapleyGroupOneKeys[idx]
+        addElementToScene(scene, elem, getElemByID(go_key+galeShapleyGroupOne[go_key][0], scene), position=RIGHT)
+
+    #Se agrega el texto para representar las asignaciones
+    text_container = VGroup()
+    text_container.name = "txtEngaged"
+    text = Text("Asignaciones: ")
+    text_container.add(text)
+    scene.add(text_container.next_to( getElemByID("xavieramy", scene), UP))
+
 class CreateScene(Scene):
     def construct(self):
         self.width = 2000
         self.height = 2000
 
-        print("Config", )
+        createScence(self, galeShapleyGroupOne, galeShapleyGroupTwo)
+        # print("Config", )
         
-        elem = construirListaPreferencias("h1", galeShapleyGroupOne["h1"])
-        elem2 = construirListaPreferencias("h2", galeShapleyGroupOne["h2"], "#0B2161")
-        elem3 = construirListaPreferencias("h3", galeShapleyGroupOne["h3"], "#01F0FF")
+        # elem = construirListaPreferencias("h1", galeShapleyGroupOne["h1"])
+        # elem2 = construirListaPreferencias("h2", galeShapleyGroupOne["h2"], "#0B2161")
+        # elem3 = construirListaPreferencias("h3", galeShapleyGroupOne["h3"], "#01F0FF")
         
-        addElementToScene(self, elem)
-        addElementToScene(self, elem2, self.mobjects[1], coords=getNextListStartPoint(self))
-        addElementToScene(self, elem3, self.mobjects[5], coords=getNextListStartPoint(self))
+        # addElementToScene(self, elem)
+        # addElementToScene(self, elem2, self.mobjects[1], coords=getNextListStartPoint(self))
+        # addElementToScene(self, elem3, self.mobjects[5], coords=getNextListStartPoint(self))
 
-        elem_b = construirListaPreferencias("m1", galeShapleyGroupTwo["m1"], "#FFFB01")
-        elem_b2 = construirListaPreferencias("m2", galeShapleyGroupTwo["m2"], "#01FF70")
-        elem_b3 = construirListaPreferencias("m3", galeShapleyGroupTwo["m3"], "#FF01E8")
+        # elem_b = construirListaPreferencias("m1", galeShapleyGroupTwo["m1"], "#FFFB01")
+        # elem_b2 = construirListaPreferencias("m2", galeShapleyGroupTwo["m2"], "#01FF70")
+        # elem_b3 = construirListaPreferencias("m3", galeShapleyGroupTwo["m3"], "#FF01E8")
 
-        addElementToScene(self, elem_b, self.mobjects[1], position=RIGHT)
-        self.wait(1)
-        addElementToScene(self, elem_b2, self.mobjects[7], position=RIGHT)
-        self.wait(1)
-        addElementToScene(self, elem_b3, self.mobjects[13], position=RIGHT)
+        # addElementToScene(self, elem_b, self.mobjects[1], position=RIGHT)
+        # self.wait(1)
+        # addElementToScene(self, elem_b2, self.mobjects[7], position=RIGHT)
+        # self.wait(1)
+        # addElementToScene(self, elem_b3, self.mobjects[13], position=RIGHT)
 
         #print("NextListStartPoint: ", getNextListStartPoint(self)
-        self.wait(1)
+        #self.wait(1)
         #getElemByID("h1m1", self).animate.set_color("#FFF400")
         #rectToAnimate = getElemByID("h1m1", self)
         #self.play(rectToAnimate.animate.set_fill("#FFF400"))
@@ -144,4 +283,4 @@ class CreateScene(Scene):
         #print("mobjects: ", self.mobjects)
         #showAllMobjectIDs(self)
 
-        self.wait(2)
+        #self.wait(2)

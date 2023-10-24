@@ -1,5 +1,5 @@
 from manim import *
-
+from main import DEFAULT_BOX_WIDTH, DEFAULT_BOX_HEIGHT
 
 class Elem:
 
@@ -79,6 +79,7 @@ def construirListaPreferencias(elem_id, lista_preferencias, color = "#F6CECE"):
      #De eleme se va a sacar el nombre del elemento
      obj = HM()
      obj.getElemento().setID(elem_id)
+     obj.getElemento().changeFigureText(elem_id)
      for i in range(len(lista_preferencias)):
          obj_elem = Elem().changeFigureText(lista_preferencias[i]).changeFigureColor(color)
          obj_elem.setID(elem_id+lista_preferencias[i])
@@ -94,7 +95,7 @@ def create_textbox(color, string, ID = None):
     result = VGroup() # create a VGroup
     result.name = ID
     box = Rectangle(  # create a box
-        height=1, width=2, fill_color=color, 
+        height=DEFAULT_BOX_HEIGHT, width=DEFAULT_BOX_WIDTH, fill_color=color, 
         fill_opacity=0.5, stroke_color=color, name = ID
     )
     print("box: ", box.get_center())
