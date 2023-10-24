@@ -6,7 +6,7 @@ galeShapleyGroupOne = {
 }
 
 galeShapleyGroupTwo = {
-    "amy": ["yancey", "xavier", "zeus"],
+    "amy": ["zeus", "xavier", "yancey"],
     "bertha": ["xavier", "yancey", "zeus"],
     "clare": ["xavier", "yancey", "zeus"],
 }

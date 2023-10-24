@@ -27,7 +27,7 @@ galeShapleyGroupOne = {
 }
 
 galeShapleyGroupTwo = {
-    "amy": ["yancey", "xavier", "zeus"],
+    "amy": ["zeus", "xavier", "yancey"],
     "bertha": ["xavier", "yancey", "zeus"],
     "clare": ["xavier", "yancey", "zeus"],
 }
@@ -97,10 +97,10 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
                     old_fiance = getFianceOfElement(w, lista_asignaciones)
                     lista_asignaciones.remove([old_fiance, w])
                     assignMandWToBeEngaged(m, w, lista_asignaciones)
+                    addWomanTextAnimation(scene, "No eres tu, soy yo", w+old_fiance)
                     addEngagedAnimation(scene, w, w+m)
                     solteros = removeElemFromList(m, solteros)
                     addSingleManToArr(old_fiance, solteros)
-                    addWomanTextAnimation(scene, "No eres tu, soy yo", w+m)
                     break
                 else:
                     #w rejects m
