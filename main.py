@@ -97,6 +97,7 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
                     old_fiance = getFianceOfElement(w, lista_asignaciones)
                     lista_asignaciones.remove([old_fiance, w])
                     assignMandWToBeEngaged(m, w, lista_asignaciones)
+                    galeShapleyGroupOne[m] = removeElemFromList(w, galeShapleyGroupOne[m])
                     addWomanTextAnimation(scene, "No eres tu, soy yo", w+old_fiance)
                     addEngagedAnimation(scene, w, w+m)
                     solteros = removeElemFromList(m, solteros)

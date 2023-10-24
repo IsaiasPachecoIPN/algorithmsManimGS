@@ -56,9 +56,9 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
     #Se inicia recorrer la lista de preferencias de cada elemento del grupo 1
     while isSomeManSingle(solteros):
         for m, m_preference_list in galeShapleyGroupOne.items():
-            #print("m: ", m)
+            print("m: ", m)
             for w in m_preference_list:
-                #print("val: ", val)
+                print("w: ", w)
                 #If w is single, then m and w become engaged
                 if isWomanSingle(w, solteras):
                     assignMandWToBeEngaged(m, w, lista_asignaciones)
@@ -72,6 +72,7 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
                     old_fiance = getFianceOfElement(w, lista_asignaciones)
                     lista_asignaciones.remove([old_fiance, w])
                     assignMandWToBeEngaged(m, w, lista_asignaciones)
+                    galeShapleyGroupOne[m] = removeElemFromList(w, galeShapleyGroupOne[m])
                     solteros = removeElemFromList(m, solteros)
                     addSingleManToArr(old_fiance, solteros)
                     break
@@ -80,7 +81,8 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
                     None
 
                 
-            
+            print("Lista solteras: ", solteras)
+            print("Lista solteros: ", solteros)
             print("lista_asignaciones: ", lista_asignaciones)
     
 
