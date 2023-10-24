@@ -7,6 +7,11 @@ Y_DEFAULT_COORD = DEFAULT_BUFF * 3
 DEFAULT_BOX_HEIGHT = 1
 DEFAULT_BOX_WIDTH = 3
 
+DEFAULT_ELEM_COLOR = "#00AAFF"
+DEFAULT_ELEM_LIST_COLOR = "#F6CECE"
+DEFAULT_SELECTED_COLOR = "#878787"
+DEFAULT_ENGAGED_COLOR = "#00FF04"
+
 # galeShapleyGroupOne = {
 #     "h1": ["m1", "m2", "m3"],
 #     "h2": ["m2", "m1", "m3"],
@@ -129,8 +134,8 @@ def addGSEvalueationPairsAnimation(scene, elemA, elemB ):
     elem_a = getElemByID(elemA, scene)
     elem_b = getElemByID(elemB, scene)
 
-    scene.play(elem_a.animate.set_fill("#FFB201"))
-    scene.play(elem_b.animate.set_fill("#FFB201"))
+    scene.play(elem_a.animate.set_fill(DEFAULT_SELECTED_COLOR))
+    scene.play(elem_b.animate.set_fill(DEFAULT_SELECTED_COLOR))
 
     scene.play(elem_a.animate(rate_func=there_and_back).flip())    
     scene.play(elem_b.animate(rate_func=there_and_back).flip())
@@ -208,10 +213,10 @@ def addEngagedAnimation(scene, elemA, elemB, oldElem = None):
         elem_c = getElemByID(oldElem, scene)
 
     if oldElem != None:
-        scene.play(elem_c.animate.set_fill("#01FF70"))
+        scene.play(elem_c.animate.set_fill(DEFAULT_ELEM_LIST_COLOR))
 
-    scene.play(elem_a.animate.set_fill("#FFB3B3"))
-    scene.play(elem_b.animate.set_fill("#FFB3B3"))
+    scene.play(elem_a.animate.set_fill(DEFAULT_ENGAGED_COLOR))
+    scene.play(elem_b.animate.set_fill(DEFAULT_ENGAGED_COLOR))
     
     scene.play(elem_a.animate(rate_func=there_and_back).shift(RIGHT))    
     scene.play(elem_b.animate(rate_func=there_and_back).shift(RIGHT))
@@ -225,7 +230,7 @@ def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
         if idx == 0:
             elem = construirListaPreferencias(m, galeShapleyGroupOne[m])
         else:
-            elem = construirListaPreferencias(m, galeShapleyGroupOne[m], "#0B2161")
+            elem = construirListaPreferencias(m, galeShapleyGroupOne[m], DEFAULT_ELEM_LIST_COLOR)
 
         if idx == 0:
             addElementToScene(scene, elem)
@@ -234,9 +239,9 @@ def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
 
     for idx, m in enumerate(galeShapleyGroupTwo.keys()):
         if idx == 0:
-            elem = construirListaPreferencias(m, galeShapleyGroupTwo[m], "#FFFB01")
+            elem = construirListaPreferencias(m, galeShapleyGroupTwo[m], DEFAULT_ELEM_LIST_COLOR)
         else:
-            elem = construirListaPreferencias(m, galeShapleyGroupTwo[m], "#01FF70")
+            elem = construirListaPreferencias(m, galeShapleyGroupTwo[m], DEFAULT_ELEM_LIST_COLOR)
 
         #print("ElemCoords: ", getElemByID(galeShapleyGroupOneKeys[idx]+m, scene))
         go_key = galeShapleyGroupOneKeys[idx]
@@ -251,43 +256,10 @@ def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
 
 class CreateScene(Scene):
     def construct(self):
-        self.width = 2000
-        self.height = 2000
+        #self.width = 2000
+        #self.height = 2000
 
         createScence(self, galeShapleyGroupOne, galeShapleyGroupTwo)
-        # print("Config", )
-        
-        # elem = construirListaPreferencias("h1", galeShapleyGroupOne["h1"])
-        # elem2 = construirListaPreferencias("h2", galeShapleyGroupOne["h2"], "#0B2161")
-        # elem3 = construirListaPreferencias("h3", galeShapleyGroupOne["h3"], "#01F0FF")
-        
-        # addElementToScene(self, elem)
-        # addElementToScene(self, elem2, self.mobjects[1], coords=getNextListStartPoint(self))
-        # addElementToScene(self, elem3, self.mobjects[5], coords=getNextListStartPoint(self))
-
-        # elem_b = construirListaPreferencias("m1", galeShapleyGroupTwo["m1"], "#FFFB01")
-        # elem_b2 = construirListaPreferencias("m2", galeShapleyGroupTwo["m2"], "#01FF70")
-        # elem_b3 = construirListaPreferencias("m3", galeShapleyGroupTwo["m3"], "#FF01E8")
-
-        # addElementToScene(self, elem_b, self.mobjects[1], position=RIGHT)
-        # self.wait(1)
-        # addElementToScene(self, elem_b2, self.mobjects[7], position=RIGHT)
-        # self.wait(1)
-        # addElementToScene(self, elem_b3, self.mobjects[13], position=RIGHT)
-
-        #print("NextListStartPoint: ", getNextListStartPoint(self)
-        #self.wait(1)
-        #getElemByID("h1m1", self).animate.set_color("#FFF400")
-        #rectToAnimate = getElemByID("h1m1", self)
-        #self.play(rectToAnimate.animate.set_fill("#FFF400"))
-        #self.play(rectToAnimate.animate(rate_func=there_and_back).flip())
-        
-        #Se inicia la lista de preferencias
-        #addGSEvalueationPairsAnimation(self, "h1", "m1")
-
         galeShapleyAlgorithm(self, galeShapleyGroupOne, galeShapleyGroupTwo)
 
-        #print("mobjects: ", self.mobjects)
-        #showAllMobjectIDs(self)
-
-        #self.wait(2)
+      
