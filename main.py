@@ -99,7 +99,7 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
                     assignMandWToBeEngaged(m, w, lista_asignaciones)
                     galeShapleyGroupOne[m] = removeElemFromList(w, galeShapleyGroupOne[m])
                     addWomanTextAnimation(scene, "No eres tu, soy yo", w+old_fiance)
-                    addEngagedAnimation(scene, w, w+m)
+                    addEngagedAnimation(scene, w, w+m, w+old_fiance)
                     solteros = removeElemFromList(m, solteros)
                     addSingleManToArr(old_fiance, solteros)
                     break
@@ -200,16 +200,22 @@ def addWomanTextAnimation(scene, text, nextToId):
     scene.play(Write(text_container[0]))
     scene.play(FadeOut(text_container, run_time=2))
 
-def addEngagedAnimation(scene, elemA, elemB):
+def addEngagedAnimation(scene, elemA, elemB, oldElem = None):
 
     elem_a = getElemByID(elemA, scene)
     elem_b = getElemByID(elemB, scene)
+    if oldElem != None:
+        elem_c = getElemByID(oldElem, scene)
+
+    if oldElem != None:
+        scene.play(elem_c.animate.set_fill("#01FF70"))
 
     scene.play(elem_a.animate.set_fill("#FFB3B3"))
     scene.play(elem_b.animate.set_fill("#FFB3B3"))
-
+    
     scene.play(elem_a.animate(rate_func=there_and_back).shift(RIGHT))    
     scene.play(elem_b.animate(rate_func=there_and_back).shift(RIGHT))
+
 
 def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
 
