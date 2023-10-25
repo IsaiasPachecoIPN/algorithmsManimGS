@@ -56,6 +56,8 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
     #Se inicia recorrer la lista de preferencias de cada elemento del grupo 1
     while isSomeManSingle(solteros):
         for m, m_preference_list in galeShapleyGroupOne.items():
+            if not isSomeManSingle(solteros):
+                break
             print("m: ", m)
             for w in m_preference_list:
                 print("w: ", w)

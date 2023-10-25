@@ -12,6 +12,8 @@ DEFAULT_ELEM_LIST_COLOR = "#F6CECE"
 DEFAULT_SELECTED_COLOR = "#878787"
 DEFAULT_ENGAGED_COLOR = "#00FF04"
 
+DEFAULT_FRAME_WIDTH = 30
+
 # galeShapleyGroupOne = {
 #     "h1": ["m1", "m2", "m3"],
 #     "h2": ["m2", "m1", "m3"],
@@ -82,6 +84,8 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
     #Se inicia recorrer la lista de preferencias de cada elemento del grupo 1
     while isSomeManSingle(solteros):
         for m, m_preference_list in galeShapleyGroupOne.items():
+            if not isSomeManSingle(solteros):
+                break
             #print("m: ", m)
             for w in m_preference_list:
                 #print("val: ", val)
@@ -190,7 +194,7 @@ def getElemByID(id, scene):
 def addTextToScene(scene, text):
     text_container = getElemByID("txtEngaged", scene)
     #Se reemplaza el texto del text_container
-    text_container[0] = Text("Asignaciones: "+text).next_to( getElemByID("xavieramy", scene), UP)
+    text_container[0] = Text("Asignaciones: "+text).next_to( getElemByID("amyzeus", scene), UP)
     scene.play(Write(text_container[0]))
     #scene.play(text_container.animate.write(text)
     #mover el contenedor 
@@ -254,11 +258,15 @@ def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
     text_container.add(text)
     scene.add(text_container.next_to( getElemByID("xavieramy", scene), UP))
 
-class CreateScene(Scene):
+class CreateScene(MovingCameraScene):
     def construct(self):
         #self.width = 2000
         #self.height = 2000
-
+        self.camera.frame.set(width = DEFAULT_FRAME_WIDTH)
+        self.camera.frame.shift(RIGHT * (DEFAULT_FRAME_WIDTH/2) - (DEFAULT_BOX_WIDTH))
+        self.camera.frame.shift(DOWN* (self.camera.frame.get_height()/4) + DEFAULT_BOX_HEIGHT) 
+        #numberplane = NumberPlane()
+        #self.add(numberplane)
         createScence(self, galeShapleyGroupOne, galeShapleyGroupTwo)
         galeShapleyAlgorithm(self, galeShapleyGroupOne, galeShapleyGroupTwo)
 
