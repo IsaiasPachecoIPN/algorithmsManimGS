@@ -260,8 +260,6 @@ def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
 
 class CreateScene(MovingCameraScene):
     def construct(self):
-        #self.width = 2000
-        #self.height = 2000
         self.camera.frame.set(width = DEFAULT_FRAME_WIDTH)
         self.camera.frame.shift(RIGHT * (DEFAULT_FRAME_WIDTH/2) - (DEFAULT_BOX_WIDTH))
         self.camera.frame.shift(DOWN* (self.camera.frame.get_height()/4) + DEFAULT_BOX_HEIGHT) 
