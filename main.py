@@ -1,7 +1,7 @@
 from manim import *
 from utils import *
 
-
+#Default values
 DEFAULT_BUFF = 0.25
 Y_DEFAULT_COORD = DEFAULT_BUFF * 3
 DEFAULT_BOX_HEIGHT = 1
@@ -14,30 +14,33 @@ DEFAULT_ENGAGED_COLOR = "#00FF04"
 
 DEFAULT_FRAME_WIDTH = 30
 
-# galeShapleyGroupOne = {
-#     "h1": ["m1", "m2", "m3"],
-#     "h2": ["m2", "m1", "m3"],
-#     "h3": ["m1", "m3", "m2"],
-# }
 
-# galeShapleyGroupTwo = {
-#     "m1": ["h2", "h1", "h3"],
-#     "m2": ["h1", "h3", "h2"],
-#     "m3": ["h2", "h3", "h1"],
-# }
+#Gale Shapley values
+dics = [{},{}]
+galeShapleyGroupOne = dics[0]
+galeShapleyGroupTwo = dics[1]
 
+def readInitData( file ):
+    """
+    Function to read the initial data from a file
+    (param) file: File
+    """
+    with open(file, "r") as f:
+        data = f.readlines()
+        counter = 0
+        for line in data:
+            line = line.strip()
+            if (line == "*"):
+                counter += 1
+            elif ("#" in line):
+                continue
+            else:
+                element, preferences = line.split(";") 
+                preferences = list(preferences.strip().split(","))
+                dics[counter][element] = preferences
 
-galeShapleyGroupOne = {
-    "xavier": ["amy", "bertha", "clare"],
-    "yancey": ["bertha", "amy", "clare"],
-    "zeus": ["amy", "bertha", "clare"],
-}
-
-galeShapleyGroupTwo = {
-    "amy": ["zeus", "xavier", "yancey"],
-    "bertha": ["xavier", "yancey", "zeus"],
-    "clare": ["xavier", "yancey", "zeus"],
-}
+        print("dics_a: ", dics[0])
+        print("dics_b: ", dics[1])
 
 def isWomanSingle( w, arr_solteras):
     return True if w in arr_solteras else False
@@ -141,8 +144,8 @@ def addGSEvalueationPairsAnimation(scene, elemA, elemB ):
     scene.play(elem_a.animate.set_fill(DEFAULT_SELECTED_COLOR))
     scene.play(elem_b.animate.set_fill(DEFAULT_SELECTED_COLOR))
 
-    scene.play(elem_a.animate(rate_func=there_and_back).flip())    
-    scene.play(elem_b.animate(rate_func=there_and_back).flip())
+    scene.play(elem_a.animate(rate_func=there_and_back).rotate(PI/4))    
+    scene.play(elem_b.animate(rate_func=there_and_back).rotate(PI/4))
 
 def addElementToScene(scene, elem, nextTo = None, position = DOWN, coords = None):
     
@@ -155,25 +158,25 @@ def addElementToScene(scene, elem, nextTo = None, position = DOWN, coords = None
     """
 
     if nextTo == None:
-        scene.add(elem.getElemento().getFigure())
+        scene.play(GrowFromCenter(elem.getElemento().getFigure()))
     elif coords != None:
-        scene.add(elem.getElemento().getFigure().move_to(coords))
+        scene.play(GrowFromCenter(elem.getElemento().getFigure().move_to(coords)))
     else:
-        scene.add(elem.getElemento().getFigure().next_to(nextTo, position))
+        scene.play(GrowFromCenter(elem.getElemento().getFigure().next_to(nextTo, position)))
 
     first_elem = elem.lista_preferencias[0].getFigure()   
     scence_lenght = len(scene.mobjects)
     last_mobject = scene.mobjects[scence_lenght-1]
 
-    scene.add(first_elem.next_to(last_mobject, RIGHT))
+    scene.play(GrowFromCenter(first_elem.next_to(last_mobject, RIGHT)))
 
     #mostrar coordenadas de firs_elem
     for i in range(1,len(elem.lista_preferencias)):
         scence_lenght = len(scene.mobjects)
-        scene.wait(1)
+        #scene.wait(1)
         new_mobject = elem.lista_preferencias[i].getFigure()
         last_mobject = scene.mobjects[scence_lenght-1]
-        scene.add(new_mobject.next_to(last_mobject.get_center(), DOWN, buff = Y_DEFAULT_COORD))
+        scene.play(GrowFromCenter(new_mobject.next_to(last_mobject.get_center(), DOWN, buff = Y_DEFAULT_COORD)))
         #Print y coord of new_mobject
         #print("new_mobject: ", new_mobject.get_y())
 
@@ -260,12 +263,16 @@ def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
 
 class CreateScene(MovingCameraScene):
     def construct(self):
-        self.camera.frame.set(width = DEFAULT_FRAME_WIDTH)
-        self.camera.frame.shift(RIGHT * (DEFAULT_FRAME_WIDTH/2) - (DEFAULT_BOX_WIDTH))
-        self.camera.frame.shift(DOWN* (self.camera.frame.get_height()/4) + DEFAULT_BOX_HEIGHT) 
-        #numberplane = NumberPlane()
-        #self.add(numberplane)
-        createScence(self, galeShapleyGroupOne, galeShapleyGroupTwo)
-        galeShapleyAlgorithm(self, galeShapleyGroupOne, galeShapleyGroupTwo)
 
-      
+        try:
+            readInitData("inputdata")
+            self.camera.frame.set(width = DEFAULT_FRAME_WIDTH)
+            self.camera.frame.shift(RIGHT * (DEFAULT_FRAME_WIDTH/2) - (DEFAULT_BOX_WIDTH))
+            self.camera.frame.shift(DOWN* (self.camera.frame.get_height()/4) + DEFAULT_BOX_HEIGHT) 
+            #numberplane = NumberPlane()
+            #self.add(numberplane)
+            createScence(self, galeShapleyGroupOne, galeShapleyGroupTwo)
+            galeShapleyAlgorithm(self, galeShapleyGroupOne, galeShapleyGroupTwo)
+        except:
+            print("Error al leer el archivo")
+            

@@ -1,0 +1,7 @@
+xavier;amy,bertha,clare
+yancey;bertha,amy,clare
+zeus;amy,bertha,clare
+*
+amy;zeus,xavier,yancey
+bertha;xavier,yancey,zeus
+clare;xavier,yancey,zeus
