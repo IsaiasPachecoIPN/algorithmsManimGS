@@ -28,8 +28,8 @@ The "*" is used to separate the groups. Also a "#" can be added to ignore the el
 
 To run the project, manim have to be installed and all its requirement. The run the following code.
 
-	main -pql main.py CreateScene
+	manim -pql main.py CreateScene
 
-###Output
+##Output
 
 ![](https://github.com/IsaiasPachecoIPN/algorithmsManimProyect/blob/main/Result.gif)
