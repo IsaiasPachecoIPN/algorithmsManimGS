@@ -15,7 +15,7 @@ DEFAULT_ENGAGED_COLOR = "#00FF04"
 DEFAULT_FRAME_WIDTH = 30
 
 
-#Gale Shapley values
+#Gale Shapley init values
 dics = [{},{}]
 galeShapleyGroupOne = dics[0]
 galeShapleyGroupTwo = dics[1]
@@ -39,25 +39,43 @@ def readInitData( file ):
                 preferences = list(preferences.strip().split(","))
                 dics[counter][element] = preferences
 
-        print("dics_a: ", dics[0])
-        print("dics_b: ", dics[1])
 
 def isWomanSingle( w, arr_solteras):
+    """
+    Function to return if a woman is in the single array
+    w - woman
+    arr_solteras - single array
+    """
     return True if w in arr_solteras else False
 
 def assignMandWToBeEngaged(m,w, lista_asignaciones):
+    """
+    Function to assign w and m to be engaged
+    m - man
+    w - woman
+    lista_asignaciones - list of engaged
+    """
     lista_asignaciones.append([m, w])
 
 def isSomeManSingle( arr_solteros ):
     """
-    Retorna si hay algun hombre soltero en el arreglo
+    Function to return if man is single
+    arr_solteros - single array
     """
     return True if len(arr_solteros) > 0 else False
 
 def addSingleManToArr( man, arr_solteros ):
+    """
+    Function to add a man to the single array
+    man - man
+    arr_solteros - single array
+    """
     arr_solteros.append(man)
 
 def getPreferenceOfElements(group_id, elem_1, elem_2):
+    """
+    Function to return the preference of elem_1 over elem_2
+    """
     #print("group_id: ", group_id)
     #print("elem_1: ", elem_1)
     #print("elem_2: ", elem_2)
@@ -65,17 +83,25 @@ def getPreferenceOfElements(group_id, elem_1, elem_2):
     return galeShapleyGroupTwo[group_id].index(elem_1) < galeShapleyGroupTwo[group_id].index(elem_2)
 
 def getFianceOfElement(elem_val, lista_asignaciones):
-    #Retorna el elemento con el que esta casado el elemento group_id
+    """
+    Function to return the fiance of an element
+    """
     for elem in lista_asignaciones:
         if elem[1] == elem_val:
             return elem[0]
     return None
 
 def removeElemFromList(elem, lista):
-    #Retorna la lista sin el elemento elem
+    """
+    Function to remove an element from a list
+    """
     return [x for x in lista if x != elem]
 
 def galeShapleyAlgorithm(scene,groupOne, groupTwo):
+
+    """
+    Function that executes the Gale Shapley Algorithm over the two groups
+    """
 
     lista_asignaciones = []
     solteras = [key for key in galeShapleyGroupTwo.keys()]
@@ -126,7 +152,7 @@ def getNextListStartPoint(scence):
 
     """
         Function to get the next coord point to add the next
-        fisrt group list of preferences in the scene
+        first group list of preferences in the scene
     """
 
     #Return fistElement x and LastElement y
@@ -137,6 +163,10 @@ def getNextListStartPoint(scence):
     return [firstElement.get_center()[0], y_coord, 0]
 
 def addGSEvalueationPairsAnimation(scene, elemA, elemB ):
+
+    """
+    Function to add the animation over the evaluation of the pairs
+    """
 
     elem_a = getElemByID(elemA, scene)
     elem_b = getElemByID(elemB, scene)
@@ -189,6 +219,9 @@ def showAllMobjectIDs(scene):
 
 
 def getElemByID(id, scene):
+    """
+    Function to get an element by id from the scene mobjects
+    """
     for elem in scene.mobjects:
         if elem.name == id:
             return elem

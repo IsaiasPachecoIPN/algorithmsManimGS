@@ -4,7 +4,7 @@ from main import DEFAULT_BOX_WIDTH, DEFAULT_BOX_HEIGHT
 class Elem:
 
     """
-        Clase para representar los elementos
+    Class to represent the element of the list
     """
 
     def __init__(self):
@@ -90,15 +90,14 @@ def construirListaPreferencias(elem_id, lista_preferencias, color = "#F6CECE"):
 
 def create_textbox(color, string, ID = None):
 
-    print("ID: ", ID)
-
+    #print("ID: ", ID)
     result = VGroup() # create a VGroup
     result.name = ID
     box = Rectangle(  # create a box
         height=DEFAULT_BOX_HEIGHT, width=DEFAULT_BOX_WIDTH, fill_color=color, 
         fill_opacity=0.5, stroke_color=color, name = ID
     )
-    print("box: ", box.get_center())
+    #print("box: ", box.get_center())
     text = Text(string) # create text
     result.add(text,box) # add both objects to the VGroup
     #result.add(box) # add both objects to the VGroup
