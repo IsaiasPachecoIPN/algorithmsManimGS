@@ -174,8 +174,10 @@ def addGSEvalueationPairsAnimation(scene, elemA, elemB ):
     scene.play(elem_a.animate.set_fill(DEFAULT_SELECTED_COLOR))
     scene.play(elem_b.animate.set_fill(DEFAULT_SELECTED_COLOR))
 
-    scene.play(elem_a.animate(rate_func=there_and_back).rotate(PI/4))    
-    scene.play(elem_b.animate(rate_func=there_and_back).rotate(PI/4))
+    #scene.play(elem_a.animate(rate_func=there_and_back).rotate(PI/4))
+    #scene.play(elem_b.animate(rate_func=there_and_back).rotate(PI/4))
+    scene.play(Flash(elem_a, color=RED, flash_radius=1, line_length=0.5, line_stroke_width=10))
+    scene.play(Flash(elem_b, color=RED, flash_radius=1, line_length=0.5, line_stroke_width=10))
 
 def addElementToScene(scene, elem, nextTo = None, position = DOWN, coords = None):
     
