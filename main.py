@@ -200,7 +200,7 @@ def addElementToScene(scene, elem, nextTo = None, position = DOWN, coords = None
     scence_lenght = len(scene.mobjects)
     last_mobject = scene.mobjects[scence_lenght-1]
 
-    scene.play(GrowFromCenter(first_elem.next_to(last_mobject, RIGHT)))
+    scene.play(GrowFromCenter(first_elem.next_to(last_mobject, RIGHT)), run_time=0.5)
 
     #mostrar coordenadas de firs_elem
     for i in range(1,len(elem.lista_preferencias)):
@@ -208,7 +208,7 @@ def addElementToScene(scene, elem, nextTo = None, position = DOWN, coords = None
         #scene.wait(1)
         new_mobject = elem.lista_preferencias[i].getFigure()
         last_mobject = scene.mobjects[scence_lenght-1]
-        scene.play(GrowFromCenter(new_mobject.next_to(last_mobject.get_center(), DOWN, buff = Y_DEFAULT_COORD)))
+        scene.play(GrowFromCenter(new_mobject.next_to(last_mobject.get_center(), DOWN, buff = Y_DEFAULT_COORD)), run_time=0.5)
         #Print y coord of new_mobject
         #print("new_mobject: ", new_mobject.get_y())
 
@@ -229,10 +229,21 @@ def getElemByID(id, scene):
             return elem
     return None
 
+def getGroupFirstElemPosition( group_number ):
+    """
+    Function to get the first element position of a group
+    """
+    if group_number == 1:
+        keys_arr = [key for key in galeShapleyGroupOne.keys()]
+        return keys_arr[0]+galeShapleyGroupOne[keys_arr[0]][0]
+    elif group_number == 2:
+        keys_arr = [key for key in galeShapleyGroupTwo.keys()]
+        return keys_arr[0]+galeShapleyGroupTwo[keys_arr[0]][0]
+
 def addTextToScene(scene, text):
     text_container = getElemByID("txtEngaged", scene)
     #Se reemplaza el texto del text_container
-    text_container[0] = Text("Asignaciones: "+text).next_to( getElemByID("amyzeus", scene), UP)
+    text_container[0] = Text("Asignaciones: "+text).next_to( getElemByID(getGroupFirstElemPosition(2), scene), UP)
     scene.play(Write(text_container[0]))
     #scene.play(text_container.animate.write(text)
     #mover el contenedor 
@@ -294,7 +305,7 @@ def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
     text_container.name = "txtEngaged"
     text = Text("Asignaciones: ")
     text_container.add(text)
-    scene.add(text_container.next_to( getElemByID("xavieramy", scene), UP))
+    scene.add(text_container.next_to( getElemByID(getGroupFirstElemPosition(1), scene), UP))
 
 class CreateScene(MovingCameraScene):
     def construct(self):
