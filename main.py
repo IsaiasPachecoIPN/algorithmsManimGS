@@ -10,7 +10,7 @@ DEFAULT_BOX_WIDTH = 3
 DEFAULT_ELEM_COLOR = "#00AAFF"
 DEFAULT_ELEM_LIST_COLOR = "#F6CECE"
 DEFAULT_SELECTED_COLOR = BLUE
-DEFAULT_ENGAGED_COLOR = YELLOW_E
+DEFAULT_ENGAGED_COLOR = GREEN_B
 
 DEFAULT_FRAME_WIDTH = 30
 
@@ -102,15 +102,11 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
     """
     Function that executes the Gale Shapley Algorithm over the two groups
     """
-
     lista_asignaciones = []
     solteras = [key for key in galeShapleyGroupTwo.keys()]
     solteros = [key for key in galeShapleyGroupOne.keys()]
 
-    #print("solteras: ", solteras)
-    #print("solteros: ", solteros)
-
-    #Se inicia recorrer la lista de preferencias de cada elemento del grupo 1
+    #Se inicia recorrer la lista de preferencias de cada hombre m
     while isSomeManSingle(solteros):
         for m, m_preference_list in galeShapleyGroupOne.items():
             if not isSomeManSingle(solteros):
@@ -171,13 +167,17 @@ def addGSEvalueationPairsAnimation(scene, elemA, elemB ):
     elem_a = getElemByID(elemA, scene)
     elem_b = getElemByID(elemB, scene)
 
-    scene.play(elem_a.animate.set_fill(DEFAULT_SELECTED_COLOR))
-    scene.play(elem_b.animate.set_fill(DEFAULT_SELECTED_COLOR))
+    scene.play(elem_a.animate.set_fill(DEFAULT_SELECTED_COLOR), run_time=0.5)
+    scene.play(elem_b.animate.set_fill(DEFAULT_SELECTED_COLOR), run_time=0.5)
 
-    #scene.play(elem_a.animate(rate_func=there_and_back).rotate(PI/4))
-    #scene.play(elem_b.animate(rate_func=there_and_back).rotate(PI/4))
-    scene.play(Flash(elem_a, color=RED, flash_radius=1, line_length=0.5, line_stroke_width=10))
-    scene.play(Flash(elem_b, color=RED, flash_radius=1, line_length=0.5, line_stroke_width=10))
+    scene.play(
+        AnimationGroup(
+            Indicate(elem_a, color=DEFAULT_SELECTED_COLOR),
+            Indicate(elem_b, color=DEFAULT_SELECTED_COLOR),
+            Flash(elem_a, color=RED, flash_radius=1, line_length=0.5, line_stroke_width=10),
+            Flash(elem_b, color=RED, flash_radius=1, line_length=0.5, line_stroke_width=10),
+        )
+    )
 
 def addElementToScene(scene, elem, nextTo = None, position = DOWN, coords = None):
     
@@ -224,7 +224,7 @@ def getElemByID(id, scene):
     """
     Function to get an element by id from the scene mobjects
     """
-    print("mobjects: ", scene.mobjects)
+    #print("mobjects: ", scene.mobjects)
     for elem in scene.mobjects:
         if elem.name == id:
             return elem
@@ -258,10 +258,19 @@ def addWomanTextAnimation(scene, text, nextToId):
     scene.add(text_container.next_to( getElemByID(nextToId, scene), RIGHT))
     #Remover el texto animado despues de 2 segundos
     scene.play(Write(text_container[0]), run_time=1)
-    scene.play(FadeOut(text_container, run_time=2))
+    scene.play(FadeOut(text_container, run_time=1))
 
 
 def addEngagedAnimation(scene, elemA, elemB, oldElem = None):
+
+    """
+    Function to add the engaged animation
+    (param) scene: Scene
+    (param) elemA: Element A ID
+    (param) elemB: Element B ID
+    (param) oldElem: Old Element ID
+    
+    """
 
     elem_a = getElemByID(elemA, scene)
     elem_b = getElemByID(elemB, scene)
@@ -271,19 +280,39 @@ def addEngagedAnimation(scene, elemA, elemB, oldElem = None):
     if oldElem != None:
         scene.play(elem_c.animate.set_fill(DEFAULT_ELEM_LIST_COLOR))
 
+    elem_a.set_fill(DEFAULT_ENGAGED_COLOR),
+    elem_b.set_fill(DEFAULT_ENGAGED_COLOR),
+
+    aux_elem_a = elem_a.copy()
+    aux_elem_b = elem_b.copy()
+
+    scene.add(aux_elem_a)
+    scene.add(aux_elem_b)
+
+    elem_a.set_fill_opacity(0),
+    elem_b.set_fill_opacity(0),
+
     scene.play(
         AnimationGroup(
-            elem_a.animate.set_fill(DEFAULT_ENGAGED_COLOR),
-            elem_b.animate.set_fill(DEFAULT_ENGAGED_COLOR),
-            Wiggle(elem_a),
-            Wiggle(elem_b),
+            Wiggle(aux_elem_a),
+            Wiggle(aux_elem_b),
         )
     )
 
-    scene.wait(1)
+    scene.remove(aux_elem_a)
+    scene.remove(aux_elem_b)
+    elem_a.set_fill_opacity(1)
+    elem_b.set_fill_opacity(1)
 
 
 def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
+
+    """
+    Function to create the scene adding all the elements
+    (param) scene: Scene
+    (param) galeShapleyGroupOne: Group One
+    (param) galeShapleyGroupTwo: Group Two
+    """
 
     galeShapleyGroupOneKeys = [key for key in galeShapleyGroupOne.keys()]
 
@@ -308,6 +337,8 @@ def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
         go_key = galeShapleyGroupOneKeys[idx]
         addElementToScene(scene, elem, getElemByID(go_key+galeShapleyGroupOne[go_key][0], scene), position=RIGHT)
 
+    #showAllMobjectIDs(scene)
+
     #Se agrega el texto para representar las asignaciones
     text_container = VGroup()
     text_container.name = "txtEngaged"
@@ -318,15 +349,17 @@ def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
 class CreateScene(MovingCameraScene):
     def construct(self):
 
-        # try:
-        readInitData("inputdata")
-        self.camera.frame.set(width = DEFAULT_FRAME_WIDTH)
-        self.camera.frame.shift(RIGHT * (DEFAULT_FRAME_WIDTH/2) - (DEFAULT_BOX_WIDTH))
-        self.camera.frame.shift(DOWN* (self.camera.frame.get_height()/4) + DEFAULT_BOX_HEIGHT) 
+        try:
+            readInitData("inputdata")
+            self.camera.frame.set(width = DEFAULT_FRAME_WIDTH)
+            self.camera.frame.shift(RIGHT * (DEFAULT_FRAME_WIDTH/2) - (DEFAULT_BOX_WIDTH))
+            self.camera.frame.shift(DOWN* (self.camera.frame.get_height()/4) + DEFAULT_BOX_HEIGHT) 
         #numberplane = NumberPlane()
         #self.add(numberplane)
-        createScence(self, galeShapleyGroupOne, galeShapleyGroupTwo)
-        galeShapleyAlgorithm(self, galeShapleyGroupOne, galeShapleyGroupTwo)
-        # except:
-        #     print("Error al leer el archivo")
+            createScence(self, galeShapleyGroupOne, galeShapleyGroupTwo)
+            galeShapleyAlgorithm(self, galeShapleyGroupOne, galeShapleyGroupTwo)
+            self.wait(2)
+        except:
+            print("Error al leer el archivo")
+            exit(1)
             
