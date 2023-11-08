@@ -83,6 +83,7 @@ def construirListaPreferencias(elem_id, lista_preferencias, color = "#F6CECE"):
      for i in range(len(lista_preferencias)):
          obj_elem = Elem().changeFigureText(lista_preferencias[i]).changeFigureColor(color)
          obj_elem.setID(elem_id+lista_preferencias[i])
+         print("obj_elem: ", obj_elem.getID())
          obj.addToListaPreferencias(obj_elem)
     
      return obj

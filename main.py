@@ -9,8 +9,8 @@ DEFAULT_BOX_WIDTH = 3
 
 DEFAULT_ELEM_COLOR = "#00AAFF"
 DEFAULT_ELEM_LIST_COLOR = "#F6CECE"
-DEFAULT_SELECTED_COLOR = "#878787"
-DEFAULT_ENGAGED_COLOR = "#00FF04"
+DEFAULT_SELECTED_COLOR = BLUE
+DEFAULT_ENGAGED_COLOR = YELLOW_E
 
 DEFAULT_FRAME_WIDTH = 30
 
@@ -224,6 +224,7 @@ def getElemByID(id, scene):
     """
     Function to get an element by id from the scene mobjects
     """
+    print("mobjects: ", scene.mobjects)
     for elem in scene.mobjects:
         if elem.name == id:
             return elem
@@ -244,19 +245,21 @@ def addTextToScene(scene, text):
     text_container = getElemByID("txtEngaged", scene)
     #Se reemplaza el texto del text_container
     text_container[0] = Text("Asignaciones: "+text).next_to( getElemByID(getGroupFirstElemPosition(2), scene), UP)
-    scene.play(Write(text_container[0]))
+    scene.play(Write(text_container[0]), run_time=1)
     #scene.play(text_container.animate.write(text)
     #mover el contenedor 
     #scene.play(text_container.animate.move_to(getElemByID("amyyancey", scene).get_center()))
 
 def addWomanTextAnimation(scene, text, nextToId):
+    print("nextToId: ", nextToId)
     text_container = VGroup()
     text = Text(text)
     text_container.add(text)
     scene.add(text_container.next_to( getElemByID(nextToId, scene), RIGHT))
     #Remover el texto animado despues de 2 segundos
-    scene.play(Write(text_container[0]))
+    scene.play(Write(text_container[0]), run_time=1)
     scene.play(FadeOut(text_container, run_time=2))
+
 
 def addEngagedAnimation(scene, elemA, elemB, oldElem = None):
 
@@ -268,11 +271,16 @@ def addEngagedAnimation(scene, elemA, elemB, oldElem = None):
     if oldElem != None:
         scene.play(elem_c.animate.set_fill(DEFAULT_ELEM_LIST_COLOR))
 
-    scene.play(elem_a.animate.set_fill(DEFAULT_ENGAGED_COLOR))
-    scene.play(elem_b.animate.set_fill(DEFAULT_ENGAGED_COLOR))
-    
-    scene.play(elem_a.animate(rate_func=there_and_back).shift(RIGHT))    
-    scene.play(elem_b.animate(rate_func=there_and_back).shift(RIGHT))
+    scene.play(
+        AnimationGroup(
+            elem_a.animate.set_fill(DEFAULT_ENGAGED_COLOR),
+            elem_b.animate.set_fill(DEFAULT_ENGAGED_COLOR),
+            Wiggle(elem_a),
+            Wiggle(elem_b),
+        )
+    )
+
+    scene.wait(1)
 
 
 def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
@@ -310,15 +318,15 @@ def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
 class CreateScene(MovingCameraScene):
     def construct(self):
 
-        try:
-            readInitData("inputdata")
-            self.camera.frame.set(width = DEFAULT_FRAME_WIDTH)
-            self.camera.frame.shift(RIGHT * (DEFAULT_FRAME_WIDTH/2) - (DEFAULT_BOX_WIDTH))
-            self.camera.frame.shift(DOWN* (self.camera.frame.get_height()/4) + DEFAULT_BOX_HEIGHT) 
-            #numberplane = NumberPlane()
-            #self.add(numberplane)
-            createScence(self, galeShapleyGroupOne, galeShapleyGroupTwo)
-            galeShapleyAlgorithm(self, galeShapleyGroupOne, galeShapleyGroupTwo)
-        except:
-            print("Error al leer el archivo")
+        # try:
+        readInitData("inputdata")
+        self.camera.frame.set(width = DEFAULT_FRAME_WIDTH)
+        self.camera.frame.shift(RIGHT * (DEFAULT_FRAME_WIDTH/2) - (DEFAULT_BOX_WIDTH))
+        self.camera.frame.shift(DOWN* (self.camera.frame.get_height()/4) + DEFAULT_BOX_HEIGHT) 
+        #numberplane = NumberPlane()
+        #self.add(numberplane)
+        createScence(self, galeShapleyGroupOne, galeShapleyGroupTwo)
+        galeShapleyAlgorithm(self, galeShapleyGroupOne, galeShapleyGroupTwo)
+        # except:
+        #     print("Error al leer el archivo")
             
