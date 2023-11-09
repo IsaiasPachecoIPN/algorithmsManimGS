@@ -32,4 +32,4 @@ To run the project, manim have to be installed and all its requirement. The run 
 
 ##Output
 
-![](https://github.com/IsaiasPachecoIPN/algorithmsManimProyect/blob/main/Result5.gif)
+![](https://github.com/IsaiasPachecoIPN/algorithmsManimProyect/blob/main/Result6.gif)

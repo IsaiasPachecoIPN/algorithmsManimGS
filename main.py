@@ -134,6 +134,7 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
                     galeShapleyGroupOne[m] = removeElemFromList(w, galeShapleyGroupOne[m])
                     addWomanTextAnimation(scene, "No eres tu, soy yo", w+old_fiance)
                     addEngagedAnimation(scene, w, w+m, w+old_fiance)
+                    addTextToScene( scene, str(lista_asignaciones))
                     solteros = removeElemFromList(m, solteros)
                     addSingleManToArr(old_fiance, solteros)
                     break
