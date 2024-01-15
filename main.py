@@ -83,11 +83,9 @@ def getPreferenceOfElements(group_id, elem_1, elem_2):
     return galeShapleyGroupTwo[group_id].index(elem_1) < galeShapleyGroupTwo[group_id].index(elem_2)
 
 def getFianceOfElement(elem_val, lista_asignaciones):
-    """
-    Function to return the fiance of an element
-    """
+    #Retorna el elemento con el que esta casado el elemento group_id
     for elem in lista_asignaciones:
-        if elem[1] == elem_val:
+        if elem_val in elem:
             return elem[0]
     return None
 
@@ -111,6 +109,8 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
         for m, m_preference_list in galeShapleyGroupOne.items():
             if not isSomeManSingle(solteros):
                 break
+            if( getFianceOfElement(m, lista_asignaciones) != None ):
+                continue # m is not single
             #print("m: ", m)
             for w in m_preference_list:
                 #print("val: ", val)
@@ -141,7 +141,9 @@ def galeShapleyAlgorithm(scene,groupOne, groupTwo):
                 else:
                     #w rejects m
                     addWomanTextAnimation(scene, "Lo siento, ya tengo pareja", w+m)
-                    None                
+                    #w rejects m
+                    galeShapleyGroupOne[m] = removeElemFromList(w, galeShapleyGroupOne[m])
+                    break               
 
             print("lista_asignaciones: ", lista_asignaciones)
     
@@ -305,6 +307,14 @@ def addEngagedAnimation(scene, elemA, elemB, oldElem = None):
     elem_a.set_fill_opacity(1)
     elem_b.set_fill_opacity(1)
 
+def calculateHeightOfScene():
+    """
+    Function to calculate the height of the scene
+    """
+    if( galeShapleyGroupOne != None ):
+        keys_counter = len(galeShapleyGroupOne.keys())
+        elems_counter = len(galeShapleyGroupOne[list(galeShapleyGroupOne.keys())[0]])
+        return DEFAULT_BOX_HEIGHT * (keys_counter * elems_counter)
 
 def createScence(scene, galeShapleyGroupOne, galeShapleyGroupTwo):
 
@@ -354,11 +364,16 @@ class CreateScene(MovingCameraScene):
             readInitData("inputdata")
             self.camera.frame.set(width = DEFAULT_FRAME_WIDTH)
             self.camera.frame.shift(RIGHT * (DEFAULT_FRAME_WIDTH/2) - (DEFAULT_BOX_WIDTH))
-            self.camera.frame.shift(DOWN* (self.camera.frame.get_height()/4) + DEFAULT_BOX_HEIGHT) 
-        #numberplane = NumberPlane()
-        #self.add(numberplane)
+            self.camera.frame.set(height = calculateHeightOfScene()*1.5)
+            self.camera.frame.shift(DOWN* (self.camera.frame.get_height()/3) + DEFAULT_BOX_HEIGHT) 
+            #numberplane = NumberPlane()
+            #self.add(numberplane)
+            print("Hola")
+            print("Height of scene: ", calculateHeightOfScene())   
+            
             createScence(self, galeShapleyGroupOne, galeShapleyGroupTwo)
             galeShapleyAlgorithm(self, galeShapleyGroupOne, galeShapleyGroupTwo)
+            
             self.wait(2)
         except:
             print("Error al leer el archivo")

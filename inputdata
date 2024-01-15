@@ -1,7 +1,11 @@
-xavier;amy,bertha,clare
-yancey;bertha,amy,clare
-zeus;amy,bertha,clare
+worle;tom,ben,sophie,katherine,anna
+priory;sophie,ben,tom,anna,katherine
+wyvem;tom,katherine,anna,sophie,ben
+broadoak;ben,tom,anna,sophie,katherine
+sidcot;sophie,tom,anna,katherine,ben
 *
-amy;zeus,xavier,yancey
-bertha;xavier,yancey,zeus
-clare;xavier,yancey,zeus
+anna;sidcot,broadoak,priory,wyvem,worle
+ben;priory,worle,sidcot,broadoak,wyvem
+katherine;priory,broadoak,sidcot,wyvem,worle
+sophie;wyvem,priory,worle,sidcot,broadoak
+tom;wyvem,broadoak,worle,sidcot,priory
