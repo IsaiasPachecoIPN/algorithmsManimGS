@@ -368,9 +368,6 @@ class CreateScene(MovingCameraScene):
             self.camera.frame.shift(DOWN* (self.camera.frame.get_height()/3) + DEFAULT_BOX_HEIGHT) 
             #numberplane = NumberPlane()
             #self.add(numberplane)
-            print("Hola")
-            print("Height of scene: ", calculateHeightOfScene())   
-            
             createScence(self, galeShapleyGroupOne, galeShapleyGroupTwo)
             galeShapleyAlgorithm(self, galeShapleyGroupOne, galeShapleyGroupTwo)
             
